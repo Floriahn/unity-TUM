@@ -1,18 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    public static int score = 0;
+    public static int lives = 3;
+    public static Text playerStats;
+
     public float playerSpeed;
+
     public GameObject projectilePrefab;
+    public GameObject explosionPrefab;
 
     //Projektile type
     public float proType=1;
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerStats = GameObject.Find("PlayerStats").GetComponent<Text>();
+        UpdateStats();
+    }
+
+    public static void UpdateStats() 
+    { 
+        playerStats.text = "Score: " + score.ToString() + 
+                         "\nLives: " + lives.ToString(); 
     }
 
     // Update is called once per frame
@@ -122,17 +136,30 @@ public class Player : MonoBehaviour
             if (Input.GetKey("space"))
             {
                 //Set position
-                Vector3 position = new Vector3(transform.position.x, transform.position.y + (0.6f * transform.localScale.y), transform.position.z);
+                Vector3 position = new Vector3(transform.position.x, transform.position.y - (0.6f * transform.localScale.y), transform.position.z);
                 // Fire projectile
-                Instantiate(projectilePrefab, position, Quaternion.identity);
+                /*Instantiate(projectilePrefab, position, Quaternion.identity);
                 Instantiate(projectilePrefab, position, Quaternion.AngleAxis(30f, Vector3.forward));
-                Instantiate(projectilePrefab, position, Quaternion.AngleAxis(-30f, Vector3.forward));
+                Instantiate(projectilePrefab, position, Quaternion.AngleAxis(-30f, Vector3.forward));*/
 
                 Instantiate(projectilePrefab, position, Quaternion.AngleAxis(180f, Vector3.forward));
-                Instantiate(projectilePrefab, position, Quaternion.AngleAxis(150f, Vector3.forward));
-                Instantiate(projectilePrefab, position, Quaternion.AngleAxis(210f, Vector3.forward));
+                Instantiate(projectilePrefab, position, Quaternion.AngleAxis(110f, Vector3.forward));
+                Instantiate(projectilePrefab, position, Quaternion.AngleAxis(250f, Vector3.forward));
             }
         }
+        
 
+    }
+
+    private void OnTriggerEnter(Collider otherObject)
+    {
+        if(otherObject.tag == "Enemy")
+        {
+            lives--;
+            UpdateStats();
+            Enemy enemy = (Enemy) otherObject.gameObject.GetComponent("Enemy");
+            enemy.SetPositionAndSpeed();
+            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        }
     }
 }
