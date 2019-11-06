@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 {
     public static int score = 0;
     public static int lives = 3;
+    public static int scoreWithoutDead=0;
     public static Text playerStats;
 
     public float playerSpeed;
@@ -15,10 +16,12 @@ public class Player : MonoBehaviour
     public GameObject explosionPrefab;
 
     //Projektile type
-    public float proType=1;
+    public static float proType=1;
+    public static float oldLives;
     // Start is called before the first frame update
     void Start()
     {
+        oldLives = lives;
         playerStats = GameObject.Find("PlayerStats").GetComponent<Text>();
         UpdateStats();
     }
@@ -29,6 +32,23 @@ public class Player : MonoBehaviour
                          "\nLives: " + lives.ToString(); 
     }
 
+    public static void UpdateWeapon()
+    {
+        if (oldLives == lives)
+        {
+            scoreWithoutDead += 1;
+        } else
+        {
+            oldLives = lives;
+            scoreWithoutDead = 0;
+            proType = 1;
+        }
+        if (scoreWithoutDead == 3)
+        {
+            proType++;
+            scoreWithoutDead = 0;
+        }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -147,7 +167,6 @@ public class Player : MonoBehaviour
                 Instantiate(projectilePrefab, position, Quaternion.AngleAxis(250f, Vector3.forward));
             }
         }
-        
 
     }
 
