@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public static int lives = 3;
     public static int scoreWithoutDead=0;
     public static Text playerStats;
+    public static int missed = 0;
 
     public float playerSpeed;
 
@@ -27,9 +28,10 @@ public class Player : MonoBehaviour
     }
 
     public static void UpdateStats() 
-    { 
-        playerStats.text = "Score: " + score.ToString() + 
-                         "\nLives: " + lives.ToString(); 
+    {
+        playerStats.text = "Score: " + score.ToString() +
+                         "\nLives: " + lives.ToString() +
+                         "\nMissed: " + missed.ToString();
     }
 
     public static void UpdateWeapon()
@@ -178,7 +180,16 @@ public class Player : MonoBehaviour
             UpdateStats();
             Enemy enemy = (Enemy) otherObject.gameObject.GetComponent("Enemy");
             enemy.SetPositionAndSpeed();
-            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            StartCoroutine(DestroyShip());
         }
+    }
+
+    IEnumerator DestroyShip()
+    {
+        Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        gameObject.GetComponent<Renderer>().enabled = false;
+        transform.position = new Vector3(0f, transform.position.y, transform.position.x);
+        yield return new WaitForSeconds(1.5f);
+        gameObject.GetComponent<Renderer>().enabled = true;
     }
 }

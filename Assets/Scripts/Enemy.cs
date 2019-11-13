@@ -26,6 +26,8 @@ public class Enemy : MonoBehaviour
         transform.Translate(Vector3.down*amtToMove);
         // Set new position and speed when enemy has reached the bottom of the screen
         if(transform.position.y <= -5){
+            Player.missed++;
+            Player.UpdateStats();
             SetPositionAndSpeed();
         }
     }
