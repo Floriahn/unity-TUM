@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public static int scoreWithoutDead = 0;
     public static Text playerStats;
     public static int missed = 0;
+    public float projectileOffset;
 
     public float playerSpeed;
 
@@ -95,7 +96,7 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown("space"))
             {
                 //Set position
-                Vector3 position = new Vector3(transform.position.x, transform.position.y + (0.6f * transform.localScale.y), transform.position.z);
+                Vector3 position = new Vector3(transform.position.x, transform.position.y + projectileOffset, transform.position.z);
                 // Fire projectile
                 Instantiate(projectilePrefab, position, Quaternion.identity);
             }
@@ -106,7 +107,7 @@ public class Player : MonoBehaviour
             if (Input.GetKey("space"))
             {
                 //Set position
-                Vector3 position = new Vector3(transform.position.x, transform.position.y + (0.6f * transform.localScale.y), transform.position.z);
+                Vector3 position = new Vector3(transform.position.x, transform.position.y + projectileOffset, transform.position.z);
                 // Fire projectile
                 Instantiate(projectilePrefab, position, Quaternion.identity);
             }
@@ -117,7 +118,7 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown("space"))
             {
                 //Set position
-                Vector3 position = new Vector3(transform.position.x, transform.position.y + (0.6f * transform.localScale.y), transform.position.z);
+                Vector3 position = new Vector3(transform.position.x, transform.position.y + projectileOffset, transform.position.z);
                 // Fire projectile
                 Instantiate(projectilePrefab, position, Quaternion.identity);
                 Instantiate(projectilePrefab, position, Quaternion.AngleAxis(30f, Vector3.forward));
@@ -130,7 +131,7 @@ public class Player : MonoBehaviour
             if (Input.GetKey("space"))
             {
                 //Set position
-                Vector3 position = new Vector3(transform.position.x, transform.position.y + (0.6f * transform.localScale.y), transform.position.z);
+                Vector3 position = new Vector3(transform.position.x, transform.position.y + projectileOffset, transform.position.z);
                 // Fire projectile
                 Instantiate(projectilePrefab, position, Quaternion.identity);
                 Instantiate(projectilePrefab, position, Quaternion.AngleAxis(30f, Vector3.forward));
@@ -143,7 +144,7 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown("space"))
             {
                 //Set position
-                Vector3 position = new Vector3(transform.position.x, transform.position.y + (0.6f * transform.localScale.y), transform.position.z);
+                Vector3 position = new Vector3(transform.position.x, transform.position.y + projectileOffset, transform.position.z);
                 // Fire projectile
                 Instantiate(projectilePrefab, position, Quaternion.identity);
                 Instantiate(projectilePrefab, position, Quaternion.AngleAxis(30f, Vector3.forward));
