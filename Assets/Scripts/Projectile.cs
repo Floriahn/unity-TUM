@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Projectile : MonoBehaviour
 {
@@ -59,6 +60,10 @@ public class Projectile : MonoBehaviour
             enemy.SetPositionAndSpeed();
             Player.score += 100;
             Player.UpdateStats();
+            if (Player.score >= 1000)
+            {
+                SceneManager.LoadScene("Win");
+            }
             Player.UpdateWeapon();
             Debug.Log("Hit");
             Destroy(gameObject);

@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
     public static int score = 0;
     public static int lives = 3;
-    public static int scoreWithoutDead=0;
+    public static int scoreWithoutDead = 0;
     public static Text playerStats;
     public static int missed = 0;
 
@@ -17,7 +18,7 @@ public class Player : MonoBehaviour
     public GameObject explosionPrefab;
 
     //Projektile type
-    public static float proType=1;
+    public static float proType = 1;
     public static float oldLives;
     // Start is called before the first frame update
     void Start()
@@ -27,7 +28,7 @@ public class Player : MonoBehaviour
         UpdateStats();
     }
 
-    public static void UpdateStats() 
+    public static void UpdateStats()
     {
         playerStats.text = "Score: " + score.ToString() +
                          "\nLives: " + lives.ToString() +
@@ -39,7 +40,8 @@ public class Player : MonoBehaviour
         if (oldLives == lives)
         {
             scoreWithoutDead += 1;
-        } else
+        }
+        else
         {
             oldLives = lives;
             scoreWithoutDead = 0;
@@ -61,10 +63,12 @@ public class Player : MonoBehaviour
         float amtToMovey = Input.GetAxisRaw("Vertical") * playerSpeed * Time.deltaTime;
         transform.Translate(Vector3.up * amtToMovey);
         // Screen wrap x
-        if (transform.position.x < -7.4f){
+        if (transform.position.x < -7.4f)
+        {
             transform.position = new Vector3(7.4f, transform.position.y, transform.position.z);
         }
-        if(transform.position.x > 7.4f){
+        if (transform.position.x > 7.4f)
+        {
             transform.position = new Vector3(-7.4f, transform.position.y, transform.position.z);
         }
         // Screen warp y
@@ -86,7 +90,7 @@ public class Player : MonoBehaviour
 
 
 
-        if (proType==1)
+        if (proType == 1)
         {
             if (Input.GetKeyDown("space"))
             {
@@ -174,11 +178,11 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider otherObject)
     {
-        if(otherObject.tag == "Enemy")
+        if (otherObject.tag == "Enemy")
         {
             lives--;
             UpdateStats();
-            Enemy enemy = (Enemy) otherObject.gameObject.GetComponent("Enemy");
+            Enemy enemy = (Enemy)otherObject.gameObject.GetComponent("Enemy");
             enemy.SetPositionAndSpeed();
             StartCoroutine(DestroyShip());
         }
@@ -188,8 +192,15 @@ public class Player : MonoBehaviour
     {
         Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         gameObject.GetComponent<Renderer>().enabled = false;
-        transform.position = new Vector3(0f, transform.position.y, transform.position.x);
+        transform.position = new Vector3(0f, transform.position.y, transform.position.z);
         yield return new WaitForSeconds(1.5f);
-        gameObject.GetComponent<Renderer>().enabled = true;
+        if (lives > 0)
+        {
+            gameObject.GetComponent<Renderer>().enabled = true;
+        }
+        else
+        {
+            SceneManager.LoadScene("Lose");
+        }
     }
 }
