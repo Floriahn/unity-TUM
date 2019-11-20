@@ -8,12 +8,13 @@ public class Projectile : MonoBehaviour
     public float projectileSpeed;
 
     public GameObject explosionPrefab;
-    ParticleSystem.MainModule setting;
+
+    private Enemy enemy;
 
     // Start is called before the first frame update
     void Start()
     {
-        setting = GetComponent<ParticleSystem>().main;
+        enemy = GameObject.Find("Enemy").GetComponent<Enemy>();
     }
 
     // Update is called once per frame
@@ -51,12 +52,10 @@ public class Projectile : MonoBehaviour
     {
         if (other.name == "Enemy")
         {
-            Enemy enemy = (Enemy)other.gameObject.GetComponent("Enemy");
 
             Instantiate(explosionPrefab, this.transform.position, transform.rotation);
-
-            //setting.startColor = Color.blue;
-
+            enemy.minSpeed += 0.5f;
+            enemy.maxSpeed += 1f;
             enemy.SetPositionAndSpeed();
             Player.score += 100;
             Player.UpdateStats();
